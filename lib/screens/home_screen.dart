@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,6 +12,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  int totalSecods = 1500;
+  late Timer timer; // 버튼 눌렀을 때만 타이머 초기화 되도록
+
+  void onTick(Timer timer){
+    setState(() {
+      totalSecods = totalSecods - 1;
+    });
+  }
+
+  void onStartPressed(){
+    timer = Timer.periodic(
+      const Duration(seconds: 1),
+      onTick
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
             flex:1,
             child : Container(
               alignment: Alignment.bottomCenter,
-              child: Text('25:00',
+              child: Text('$totalSecods',
                 style: TextStyle(
                   color: Theme.of(context).cardColor,
                   fontSize: 89,
@@ -35,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: IconButton(
                 iconSize: 120,
                 color: Theme.of(context).cardColor,
-                onPressed: () {},
+                onPressed: onStartPressed,
                 icon: const Icon(Icons.play_circle_outline),
               ),
             ),
@@ -50,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(60),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
